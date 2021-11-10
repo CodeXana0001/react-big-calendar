@@ -47,7 +47,7 @@ export default function(globalize) {
 
   function firstOfWeek(culture) {
     culture = getCulture(culture)
-    return (culture && culture.calendar.firstDay) || 0
+    return (culture && culture.calendar.firstDay) || 1
   }
 
   return new DateLocalizer({

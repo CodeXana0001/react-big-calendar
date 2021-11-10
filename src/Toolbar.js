@@ -10,32 +10,38 @@ class Toolbar extends React.Component {
       label,
     } = this.props
 
+    console.log(label)
+
     return (
       <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.TODAY)}
+        <span style={{ width: '33%' }} />
+        <div
+          style={{ width: '34%', display: 'flex', justifyContent: 'center' }}
+        >
+          <span
+            className="rbc-btn-group"
+            style={{ display: 'flex', margin: 'auto' }}
           >
-            {messages.today}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.PREVIOUS)}
-          >
-            {messages.previous}
-          </button>
-          <button
-            type="button"
-            onClick={this.navigate.bind(null, navigate.NEXT)}
-          >
-            {messages.next}
-          </button>
-        </span>
-
-        <span className="rbc-toolbar-label">{label}</span>
-
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+            <button
+              type="button"
+              onClick={this.navigate.bind(null, navigate.PREVIOUS)}
+            >
+              {messages.previous}
+            </button>
+            <span className="rbc-toolbar-label">{label}</span>
+            <button
+              type="button"
+              onClick={this.navigate.bind(null, navigate.NEXT)}
+            >
+              {messages.next}
+            </button>
+          </span>
+        </div>
+        <div style={{ width: '33%', display: 'flex', justifyContent: 'right' }}>
+          <span className="rbc-btn-group" style={{ margin: 'right' }}>
+            {this.viewNamesGroup(messages)}
+          </span>
+        </div>
       </div>
     )
   }

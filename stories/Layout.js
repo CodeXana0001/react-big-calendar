@@ -124,7 +124,7 @@ storiesOf('Layout Issues', module)
   .add('Single days should only span one slot, multi-days multiple', () => {
     return (
       <Calendar
-        defaultDate={new Date(2015, 3, 1)}
+        defaultDate={new Date()}
         events={[
           {
             title: 'SingleDay 1',

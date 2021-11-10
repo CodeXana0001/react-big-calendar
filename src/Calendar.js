@@ -103,7 +103,7 @@ class Calendar extends React.Component {
 
     /**
      * The initial view set for the Calendar.
-     * @type Calendar.Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Calendar.Views ('month'|'week'|'work_week'|'day')
      * @default 'month'
      */
     defaultView: PropTypes.string,
@@ -296,7 +296,7 @@ class Calendar extends React.Component {
     /**
      *
      * ```js
-     * (dates: Date[] | { start: Date; end: Date }, view: 'month'|'week'|'work_week'|'day'|'agenda'|undefined) => void
+     * (dates: Date[] | { start: Date; end: Date }, view: 'month'|'week'|'work_week'|'day'|undefined) => void
      * ```
      *
      * Callback fired when the visible date range changes. Returns an Array of dates
@@ -405,7 +405,7 @@ class Calendar extends React.Component {
      * accepts either an array of builtin view names,
      *
      * ```jsx
-     * views={['month', 'day', 'agenda']}
+     * views={['month', 'day']}
      * ```
      * or an object hash of the view name and the component (or boolean for builtin).
      *
@@ -427,9 +427,9 @@ class Calendar extends React.Component {
      * }
      * ```
      *
-     * @type Views ('month'|'week'|'work_week'|'day'|'agenda')
+     * @type Views ('month'|'week'|'work_week'|'day')
      * @View
-     ['month', 'week', 'day', 'agenda']
+     ['month', 'week', 'day']
      */
     views: componentViews,
 
@@ -448,9 +448,6 @@ class Calendar extends React.Component {
      * Set to `null` to disable drill-down actions.
      *
      * ```js
-     * <Calendar
-     *   drilldownView="agenda"
-     * />
      * ```
      */
     drilldownView: PropTypes.string,
@@ -683,20 +680,6 @@ class Calendar extends React.Component {
       dayHeaderFormat: dateFormat,
 
       /**
-       * Toolbar header format for the Agenda view, e.g. "4/1/2015 – 5/1/2015"
-       */
-      agendaHeaderFormat: dateRangeFormat,
-
-      /**
-       * A time range format for selecting time slots, e.g "8:00am – 2:00pm"
-       */
-      selectRangeFormat: dateRangeFormat,
-
-      agendaDateFormat: dateFormat,
-      agendaTimeFormat: dateFormat,
-      agendaTimeRangeFormat: dateRangeFormat,
-
-      /**
        * Time range displayed on events.
        */
       eventTimeRangeFormat: dateRangeFormat,
@@ -727,11 +710,6 @@ class Calendar extends React.Component {
      *   timeGutterHeader: MyTimeGutterWrapper,
      *   resourceHeader: MyResourceHeader,
      *   toolbar: MyToolbar,
-     *   agenda: {
-     *   	 event: MyAgendaEvent, // with the agenda view use a different component to render events
-     *     time: MyAgendaTime,
-     *     date: MyAgendaDate,
-     *   },
      *   day: {
      *     header: MyDayHeader,
      *     event: MyDayEvent,
@@ -760,12 +738,6 @@ class Calendar extends React.Component {
       resourceHeader: PropTypes.elementType,
 
       toolbar: PropTypes.elementType,
-
-      agenda: PropTypes.shape({
-        date: PropTypes.elementType,
-        time: PropTypes.elementType,
-        event: PropTypes.elementType,
-      }),
 
       day: PropTypes.shape({
         header: PropTypes.elementType,
@@ -800,7 +772,6 @@ class Calendar extends React.Component {
      *   yesterday: 'Yesterday',
      *   tomorrow: 'Tomorrow',
      *   today: 'Today',
-     *   agenda: 'Agenda',
      *
      *   noEventsInRange: 'There are no events in this range.',
      *
@@ -819,7 +790,6 @@ class Calendar extends React.Component {
       month: PropTypes.node,
       week: PropTypes.node,
       day: PropTypes.node,
-      agenda: PropTypes.node,
       date: PropTypes.node,
       time: PropTypes.node,
       event: PropTypes.node,
@@ -844,7 +814,7 @@ class Calendar extends React.Component {
     popup: false,
     toolbar: true,
     view: views.MONTH,
-    views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
+    views: [views.MONTH, views.WEEK, views.DAY],
     step: 30,
     length: 30,
 
@@ -1054,7 +1024,7 @@ class Calendar extends React.Component {
    *
    * @param date
    * @param viewComponent
-   * @param {'month'|'week'|'work_week'|'day'|'agenda'} [view] - optional
+   * @param {'month'|'week'|'work_week'|'day'} [view] - optional
    * parameter. It appears when range change on view changing. It could be handy
    * when you need to have both: range and view type at once, i.e. for manage rbc
    * state via url

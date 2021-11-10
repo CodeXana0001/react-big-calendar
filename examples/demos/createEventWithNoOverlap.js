@@ -1,7 +1,6 @@
 import React from 'react'
 import { Calendar, Views } from 'react-big-calendar'
 import events from '../events'
-import ExampleControlSlot from '../ExampleControlSlot'
 import _ from 'lodash'
 
 const propTypes = {}
@@ -31,28 +30,50 @@ class CreateEventWithNoOverlap extends React.Component {
       })
   }
 
+  slotStyleGetter = date => {
+    const hours = new Date(date).getHours()
+    if (hours > 18 || hours < 6)
+      return {
+        style: {
+          backgroundColor: 'grey',
+        },
+      }
+  }
+
+  eventStyleGetter = event => {
+    if (event.id % 3 === 0)
+      return {
+        style: {
+          backgroundColor: 'green',
+        },
+      }
+    if (event.id % 3 === 1)
+      return {
+        style: {
+          backgroundColor: 'orange',
+        },
+      }
+  }
+
   render() {
     const { localizer } = this.props
+    console.log(this.state.events[0])
     return (
       <>
-        <ExampleControlSlot.Entry waitForOutlet>
-          <strong>
-            Click an event to see more info, or drag the mouse over the calendar
-            to select a date/time range.
-            <br />
-            The events are being arranged by `no-overlap` algorithm.
-          </strong>
-        </ExampleControlSlot.Entry>
         <Calendar
           selectable
           localizer={localizer}
           events={this.state.events}
-          defaultView={Views.WEEK}
+          defaultView={Views.MONTH}
           scrollToTime={new Date(1970, 1, 1, 6)}
-          defaultDate={new Date(2015, 3, 12)}
+          defaultDate={new Date()}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleSelect}
           dayLayoutAlgorithm={this.state.dayLayoutAlgorithm}
+          slotPropGetter={this.slotStyleGetter}
+          eventPropGetter={this.eventStyleGetter}
+          step={15}
+          timeslots={1}
         />
       </>
     )
