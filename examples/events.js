@@ -173,7 +173,7 @@ export default randomEventData
   ])
   .filter(
     e =>
-      e.start.getHours() >= 6 &&
+      e.start.getHours() >= 8 &&
       e.end.getHours() <= 18 &&
       e.start.getHours() < e.end.getHours() &&
       e.end.getDate() === e.start.getDate()

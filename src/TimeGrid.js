@@ -186,7 +186,8 @@ export default class TimeGrid extends Component {
       resizable,
     } = this.props
 
-    width = width || this.state.gutterWidth
+    width = 71.515625
+    //width = width || this.state.gutterWidth
 
     let start = range[0],
       end = range[range.length - 1]
@@ -294,7 +295,6 @@ export default class TimeGrid extends Component {
     this.measureGutterAnimationFrameRequest = window.requestAnimationFrame(
       () => {
         const width = getWidth(this.gutter)
-
         if (width && this.state.gutterWidth !== width) {
           this.setState({ gutterWidth: width })
         }

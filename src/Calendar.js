@@ -813,8 +813,8 @@ class Calendar extends React.Component {
     elementProps: {},
     popup: false,
     toolbar: true,
-    view: views.MONTH,
-    views: [views.MONTH, views.WEEK, views.DAY],
+    view: views.WEEK,
+    views: [views.WEEK, views.DAY],
     step: 30,
     length: 30,
 
