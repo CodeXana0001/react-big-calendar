@@ -119,7 +119,6 @@ class DayColumn extends React.Component {
 
     let { slotMetrics } = this
     let { selecting, top, height, startDate, endDate } = this.state
-
     let selectDates = { start: startDate, end: endDate }
 
     const { className, style } = dayProp(max)

@@ -10,8 +10,6 @@ class Toolbar extends React.Component {
       label,
     } = this.props
 
-    console.log(label)
-
     return (
       <div className="rbc-toolbar">
         <span style={{ width: '33%' }} />

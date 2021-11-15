@@ -12,27 +12,101 @@ class CreateEventWithNoOverlap extends React.Component {
     this.state = {
       events: _.cloneDeep(events),
       dayLayoutAlgorithm: 'no-overlap',
+      unavailableTime: [],
     }
   }
 
-  handleSelect = ({ start, end }) => {
-    const title = window.prompt('New Event name')
-    if (title)
-      this.setState({
-        events: [
-          ...this.state.events,
-          {
-            start,
-            end,
-            title,
-          },
-        ],
-      })
+  componentDidMount() {
+    this.getAvailableTime()
   }
 
-  slotStyleGetter = date => {
-    const hours = new Date(date).getHours()
-    if (hours > 18 || hours < 6)
+  addMins = (time, mins) => {
+    return new Date(time.getTime() + mins * 60 * 1000)
+  }
+
+  minusMins = (time, mins) => {
+    return new Date(time.getTime() - mins * 60 * 1000)
+  }
+
+  getAvailableTime = () => {
+    const numDevice = 2
+    const events = _.cloneDeep(this.state.events).filter(
+      e => e.end > Date.now()
+    )
+    let occupiedTime = []
+    if (events.length) {
+      const countOccupiedTime = {}
+      events.forEach(e => {
+        for (
+          let time = this.addMins(e.start, 15);
+          time < e.end;
+          time = this.addMins(time, 15)
+        ) {
+          if (countOccupiedTime[time]) {
+            countOccupiedTime[time] = countOccupiedTime[time] + 1
+          } else {
+            countOccupiedTime[time] = 1
+          }
+        }
+      })
+      Object.keys(countOccupiedTime).forEach(key => {
+        if (countOccupiedTime[key] >= numDevice) {
+          occupiedTime.push(new Date(key))
+        }
+      })
+      occupiedTime.sort((a, b) => a - b)
+      if (occupiedTime.length) {
+        let unavailableTime = []
+        let start = this.minusMins(occupiedTime[0], 15)
+        for (let i = 0; i < occupiedTime.length; i++) {
+          if (
+            i === 0 ||
+            occupiedTime[i - 1] < this.minusMins(occupiedTime[i], 30)
+          ) {
+            start = this.minusMins(occupiedTime[i], 15)
+          } else if (
+            i === occupiedTime.length ||
+            occupiedTime[i + 1] > this.addMins(occupiedTime[i], 30)
+          ) {
+            const end = this.addMins(occupiedTime[i], 15)
+            unavailableTime.push([new Date(start), new Date(end)])
+          }
+        }
+        this.setState({ unavailableTime })
+      }
+    }
+  }
+
+  isSlotAvailable = (start, end) => {
+    const { unavailableTime } = this.state
+    if (start <= Date.now()) {
+      return false
+    }
+    return !unavailableTime.filter(e => e[0] <= start && e[1] >= end).length
+  }
+
+  handleSelect = ({ start, end }) => {
+    const isAvailable = this.isSlotAvailable(start, end)
+    if (isAvailable) {
+      const title = window.prompt('New Event name')
+      if (title)
+        this.setState({
+          events: [
+            ...this.state.events,
+            {
+              start,
+              end,
+              title,
+            },
+          ],
+        })
+    }
+  }
+
+  slotStyleGetter = start => {
+    const end = this.addMins(start, 15)
+    const isAvailable = this.isSlotAvailable(start, end)
+    if (!isAvailable)
       return {
         style: {
           backgroundColor: 'grey',
@@ -57,7 +131,6 @@ class CreateEventWithNoOverlap extends React.Component {
 
   render() {
     const { localizer } = this.props
-    console.log(this.state.events[0])
     return (
       <>
         <Calendar
@@ -73,7 +146,7 @@ class CreateEventWithNoOverlap extends React.Component {
           slotPropGetter={this.slotStyleGetter}
           eventPropGetter={this.eventStyleGetter}
           step={15}
-          timeslots={1}
+          timeslots={4}
         />
       </>
     )

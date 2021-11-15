@@ -1,11 +1,11 @@
 const now = new Date()
 
-const num = 200
+const num = 250
 
 let randomEventData = []
 let i = 0
 while (i < num) {
-  const day = Math.floor(Math.random() * 30)
+  const day = Math.floor(15 + Math.random() * 15)
   const id = Math.floor(Math.random() * 100)
   randomEventData.push({
     id: id,
@@ -15,7 +15,7 @@ while (i < num) {
       10,
       day,
       Math.floor(Math.random() * 23),
-      Math.floor(Math.random() * 59),
+      Math.floor(Math.random() * 3) * 15,
       0
     ),
     end: new Date(
@@ -23,7 +23,7 @@ while (i < num) {
       10,
       day,
       Math.floor(Math.random() * 23),
-      Math.floor(Math.random() * 59),
+      Math.floor(Math.random() * 3) * 15,
       0
     ),
     desc: 'Pre-meeting meeting, to prepare for the meeting',
